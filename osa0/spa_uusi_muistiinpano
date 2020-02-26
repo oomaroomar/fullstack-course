@@ -1,0 +1,17 @@
+
+note over selain:
+Käyttäjä kirjoittaa jotain tekstikenttään
+ja painaa nappia *tallenna*
+end note
+
+note over selain:
+Single page appin state päivittyy
+ja ruudun sisältö uudeleenpiirretään
+end note
+
+selain->palvelin: HTTP POST https://fullstack-exampleapp.herokuapp.com/new_note
+
+note over palvelin:
+Palvelin luo muistiinpanon selaimen
+antamilla parametreillä 
+end note

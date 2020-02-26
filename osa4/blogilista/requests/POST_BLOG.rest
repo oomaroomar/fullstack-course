@@ -1,0 +1,11 @@
+post http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1sdXVra2FpIiwiaWQiOiI1ZTBiYTI2ZGNmYTVmMDJkYTc2NzMwYTYiLCJpYXQiOjE1NzgxNDcwOTl9.vkiB_CMeSOopbRZHMVQgIdnzwD2lRirqLOeP8dXbXSM
+
+{
+  "title": "Clarifying some previous events",
+  "author": "Destiny",
+  "url": "https://www.reddit.com/r/Destiny/comments/dmjb18/clarifying_some_previous_events/",
+  "likes": 3400,
+  "user": "5e0ba26dcfa5f02da76730a6"
+}
