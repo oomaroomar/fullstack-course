@@ -1,12 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-const Notification = ({message = null, notifType}) => {
-  if(message === null) return null
+import Alert from 'react-bootstrap/Alert'
 
-  return <div className={`${notifType}`} >
+const Notification = ({ message = null, notifType }) => {
+  if (message === null) return null
+
+  return <Alert variant={notifType} >
     {message}
-  </div>
+  </Alert>
 }
 
 Notification.propTypes = {

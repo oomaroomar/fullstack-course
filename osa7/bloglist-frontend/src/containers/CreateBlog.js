@@ -5,7 +5,9 @@ import { create } from '../services/blogs'
 
 import CreateBlogInput from '../components/CreateBlogInput'
 
-const CreateBlog = ({notifSetter, addBlogToState}) => {
+import Form from 'react-bootstrap/Form'
+
+const CreateBlog = ({ notifSetter, addBlogToState }) => {
 
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
@@ -27,20 +29,20 @@ const CreateBlog = ({notifSetter, addBlogToState}) => {
   const handleSubmit = async e => {
     e.preventDefault()
     try {
-      const newBlog = await create({title, author, url})
+      const newBlog = await create({ title, author, url })
       notifSetter('success', `A new blog ${newBlog.title} by ${newBlog.author} added`)
       addBlogToState(newBlog)
     } catch (err) {
-      notifSetter('error', `Failed to add blog ${err.message}`)
+      notifSetter('danger', `Failed to add blog ${err.message}`)
     }
     setTitle('')
     setAuthor('')
     setUrl('')
   }
 
-  if(!blogFormVisibility) return <button onClick={() => setBlogFormVisibility(true)} >new note</button>
-  return( 
-    <form>
+  if (!blogFormVisibility) return <button onClick={() => setBlogFormVisibility(true)} >new note</button>
+  return (
+    <Form>
       <h2>create new</h2>
       <CreateBlogInput handler={handleTitleChange} value={title} text={'title: '} />
       <CreateBlogInput handler={handleAuthorChange} value={author} text={'author: '} />
@@ -49,7 +51,7 @@ const CreateBlog = ({notifSetter, addBlogToState}) => {
         <button onClick={handleSubmit} >create</button>
         <button type="button" onClick={() => setBlogFormVisibility(false)} >cancel</button>
       </div>
-    </form>
+    </Form>
   )
 }
 
