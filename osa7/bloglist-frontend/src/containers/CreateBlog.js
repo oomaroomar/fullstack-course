@@ -1,18 +1,24 @@
+/* eslint no-console: ["error", { allow: ["log"] }] */
+
 import React, { useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import PropTypes from 'prop-types'
 
-import { create } from '../services/blogs'
+import { addBlog } from '../actions/blogs'
 
 import CreateBlogInput from '../components/CreateBlogInput'
 
 import Form from 'react-bootstrap/Form'
 
-const CreateBlog = ({ notifSetter, addBlogToState }) => {
-
+const CreateBlog = ({ notifSetter }) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
   const [blogFormVisibility, setBlogFormVisibility] = useState(false)
+
+  const { user } = useSelector(state => state)
+
+  const dispatch = useDispatch()
 
   const handleTitleChange = e => {
     e.preventDefault()
@@ -28,10 +34,10 @@ const CreateBlog = ({ notifSetter, addBlogToState }) => {
   }
   const handleSubmit = async e => {
     e.preventDefault()
+    console.log('handleSubmit called')
     try {
-      const newBlog = await create({ title, author, url })
-      notifSetter('success', `A new blog ${newBlog.title} by ${newBlog.author} added`)
-      addBlogToState(newBlog)
+      dispatch(addBlog({ title, author, url }, user))
+      notifSetter('success', `A new blog ${title} by ${author} added`)
     } catch (err) {
       notifSetter('danger', `Failed to add blog ${err.message}`)
     }
@@ -40,16 +46,27 @@ const CreateBlog = ({ notifSetter, addBlogToState }) => {
     setUrl('')
   }
 
-  if (!blogFormVisibility) return <button onClick={() => setBlogFormVisibility(true)} >new note</button>
+  if (!blogFormVisibility)
+    return <button onClick={() => setBlogFormVisibility(true)}>new blog</button>
   return (
-    <Form>
+    <Form onSubmit={handleSubmit}>
       <h2>create new</h2>
-      <CreateBlogInput handler={handleTitleChange} value={title} text={'title: '} />
-      <CreateBlogInput handler={handleAuthorChange} value={author} text={'author: '} />
+      <CreateBlogInput
+        handler={handleTitleChange}
+        value={title}
+        text={'title: '}
+      />
+      <CreateBlogInput
+        handler={handleAuthorChange}
+        value={author}
+        text={'author: '}
+      />
       <CreateBlogInput handler={handleUrlChange} value={url} text={'url: '} />
       <div>
-        <button onClick={handleSubmit} >create</button>
-        <button type="button" onClick={() => setBlogFormVisibility(false)} >cancel</button>
+        <button type='submit'>create</button>
+        <button type='button' onClick={() => setBlogFormVisibility(false)}>
+          cancel
+        </button>
       </div>
     </Form>
   )
@@ -57,7 +74,7 @@ const CreateBlog = ({ notifSetter, addBlogToState }) => {
 
 CreateBlog.propTypes = {
   notifSetter: PropTypes.func,
-  addBlogToState: PropTypes.func
+  addBlogToState: PropTypes.func,
 }
 
 export default CreateBlog

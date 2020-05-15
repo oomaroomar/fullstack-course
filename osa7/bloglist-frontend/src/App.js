@@ -22,7 +22,7 @@ import { UserView } from './components/UserView'
 import { BlogView } from './components/BlogView'
 
 import { initUsers } from './actions/users'
-import { initBlogs, addBlog, removeBlog } from './actions/blogs'
+import { initBlogs, removeBlog } from './actions/blogs'
 import { runNotification } from './actions/notification'
 import { setUser } from './actions/user'
 
@@ -34,7 +34,6 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import './index.css'
 
 const App = () => {
-
   const username = useField('text')
   const password = useField('text')
   const newUsername = useField('text')
@@ -60,7 +59,7 @@ const App = () => {
     }
   }, [])
 
-  const login = async (e) => {
+  const login = async e => {
     e.preventDefault()
     try {
       const they = await loginRequest(username.value, password.value)
@@ -78,13 +77,13 @@ const App = () => {
     history.push(dest)
   }
 
-  const logout = (e) => {
+  const logout = e => {
     e.preventDefault()
     dispatch(setUser(null))
     window.localStorage.removeItem('user')
   }
 
-  const createAccount = async (e) => {
+  const createAccount = async e => {
     e.preventDefault()
     try {
       await newAccountRequest(newUsername.value, newPassword.value)
@@ -101,55 +100,83 @@ const App = () => {
   const removeBlogFromState = id => {
     dispatch(removeBlog(id))
   }
-  const addBlogToState = blog => {
-    dispatch(addBlog(blog))
-  }
 
   const renderContent = () => {
-    const formattedBlogs = blogs ?
-      blogs.map(blog => <Blog viewBlog={(id) => route(`/blog/${id}`)} userIsOwner={blog.user.name === user.name}
-        key={blog.id} blog={blog} />)
+    const formattedBlogs = blogs
+      ? blogs.map(blog => (
+          <Blog
+            viewBlog={id => route(`/blog/${id}`)}
+            userIsOwner={blog.user.name === user.name}
+            key={blog.id}
+            blog={blog}
+          />
+        ))
       : null
-    return <div className='renderedContent'>
-      <ListGroup>
-        {formattedBlogs}
-      </ListGroup>
-      <CreateBlog addBlogToState={(blog) => addBlogToState(blog)} notifSetter={(t, m) => notifSetter(t, m)} />
-    </div>
+    return (
+      <div className='renderedContent'>
+        <ListGroup>{formattedBlogs}</ListGroup>
+        <CreateBlog notifSetter={(t, m) => notifSetter(t, m)} />
+      </div>
+    )
   }
 
   console.log(history)
   return (
-    <Container className="App">
-      <Notification message={notification.message} notifType={notification.success} />
+    <Container className='App'>
+      <Notification
+        message={notification.message}
+        notifType={notification.success}
+      />
       <Switch>
-        <Route path='/login' >
-          <div >
-            <Login loginName={username.value} handleNameChange={username.onChange} loginPassword={password.value}
-              handlePasswordChange={password.onChange} login={login} />
-            <CreateAccount accountName={newUsername.value} handleNameChange={newUsername.onChange} accountPassword={newPassword.value}
-              handlePasswordChange={newPassword.onChange} createAccount={createAccount} />
+        <Route path='/login'>
+          <div>
+            <Login
+              loginName={username.value}
+              handleNameChange={username.onChange}
+              loginPassword={password.value}
+              handlePasswordChange={password.onChange}
+              login={login}
+            />
+            <CreateAccount
+              accountName={newUsername.value}
+              handleNameChange={newUsername.onChange}
+              accountPassword={newPassword.value}
+              handlePasswordChange={newPassword.onChange}
+              createAccount={createAccount}
+            />
           </div>
         </Route>
-        {user ?
+        {user ? (
           <>
-            <div>{user.username} logged in <Button variant='outline-danger' onClick={logout}>logout</Button></div>
-            <div><button onClick={() => route('/users')}>Users</button><button onClick={() => route('/')}>Blogs</button></div>
-            <Route path='/' exact >
+            <div>
+              {user.username} logged in{' '}
+              <Button variant='outline-danger' onClick={logout}>
+                logout
+              </Button>
+            </div>
+            <div>
+              <button onClick={() => route('/users')}>Users</button>
+              <button onClick={() => route('/')}>Blogs</button>
+            </div>
+            <Route path='/' exact>
               <BlogScreen content={renderContent()} />
             </Route>
-            <Route path='/users' exact >
+            <Route path='/users' exact>
               <UsersView route={route} />
             </Route>
             <Route path={`/user/:id`} exact>
               <UserView />
             </Route>
             <Route path={`/blog/:id`} exact>
-              <BlogView removeBlogFromState={removeBlogFromState} route={route} />
+              <BlogView
+                removeBlogFromState={removeBlogFromState}
+                route={route}
+              />
             </Route>
           </>
-          : <Redirect to='/login' />
-        }
+        ) : (
+          <Redirect to='/login' />
+        )}
       </Switch>
     </Container>
   )

@@ -5,19 +5,19 @@ let token = null
 
 const setToken = newToken => {
   token = `bearer ${newToken}`
-} 
+}
 
 const create = async newBlog => {
   const config = {
     headers: { Authorization: token },
   }
-  const response = await axios.post(baseUrl, newBlog, config) 
+  const response = await axios.post(baseUrl, newBlog, config)
   return response.data
 }
 
 const like = async (id, likes) => {
   const config = {
-    headers: { Authorization: token }
+    headers: { Authorization: token },
   }
   const response = await axios.put(`${baseUrl}/${id}`, likes, config)
   return response.data
@@ -25,7 +25,7 @@ const like = async (id, likes) => {
 
 const remove = async id => {
   const config = {
-    headers: { Authorization: token }
+    headers: { Authorization: token },
   }
   const response = await axios.delete(`${baseUrl}/${id}`, config)
   return response

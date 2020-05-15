@@ -7,7 +7,6 @@ import { useSelector } from 'react-redux'
 import { like, remove } from '../services/blogs'
 
 const BlogView = ({ removeBlogFromState, route }) => {
-
   const { blogs, user } = useSelector(state => state)
   const { id } = useParams()
   const blog = blogs.find(b => b.id === id)
@@ -29,25 +28,27 @@ const BlogView = ({ removeBlogFromState, route }) => {
     }
   }
 
-  return <div>
-    <h2>{blog.title}</h2>
+  return (
     <div>
-      <p>{blog.url}</p>
-      <div style={{ display: 'flex' }}>
-        <p>{likes} likes</p>
-        <button onClick={handleLike}>like</button>
+      <h2>{blog.title}</h2>
+      <div>
+        <p>{blog.url}</p>
+        <div style={{ display: 'flex' }}>
+          <p>{likes} likes</p>
+          <button onClick={handleLike}>like</button>
+        </div>
+        <p>added by {blog.user.username}</p>
+        {user.username === blog.user.username ? (
+          <button onClick={handleRemove}>Delete</button>
+        ) : null}
       </div>
-      <p>added by {blog.user.username}</p>
-      {user.username === blog.user.username
-        ? <button onClick={handleRemove}  >Delete</button>
-        : null
-      }
     </div>
-  </div>
+  )
 }
 
 BlogView.propTypes = {
   removeBlogFromState: PropTypes.func,
+  route: PropTypes.func,
 }
 
 export { BlogView }
