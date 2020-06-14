@@ -1,6 +1,6 @@
 import patientsData from '../../data/patients';
 
-import { Patient, SafePatient } from '../types';
+import { Patient, SafePatient, Entry } from '../types';
 
 const patients: Array<Patient> = patientsData;
 
@@ -28,8 +28,16 @@ const addPatient = (patient: Patient): SafePatient => {
   return safePatient;
 };
 
+const addEntry = (id: string, entry: Entry): Entry => {
+  const found = getPatientById(id);
+  found.entries = [...found.entries, entry];
+
+  return entry;
+};
+
 export default {
   getPatients,
   getPatientById,
   addPatient,
+  addEntry,
 };

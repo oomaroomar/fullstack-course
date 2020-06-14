@@ -6,6 +6,6 @@ export const isFetched = (patient: Patient): boolean => {
 };
 
 export const assertNever = (value: never): never => {
-  console.log(value);
+  console.log('Never value: ', value);
   throw new Error('Never supposed to happend');
 };

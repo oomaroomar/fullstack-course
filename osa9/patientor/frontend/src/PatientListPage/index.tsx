@@ -32,7 +32,9 @@ const PatientListPage: React.FC = () => {
       dispatch(addPatient(newPatient));
       closeModal();
     } catch (e) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       console.error(e.response.data);
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       setError(e.response.data.error);
     }
   };

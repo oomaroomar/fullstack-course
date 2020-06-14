@@ -1,6 +1,6 @@
 import React from 'react';
 import { Entry, Diagnosis } from '../types';
-import { Segment, List, Header, Icon } from 'semantic-ui-react';
+import { Segment, List, Header } from 'semantic-ui-react';
 import { assertNever } from '../utils';
 import HealthSpecific from './HealthSpecific';
 import HospitalSpecific from './HospitalSpecific';

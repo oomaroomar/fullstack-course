@@ -5,10 +5,10 @@ export enum Gender {
 }
 
 export enum HealthCheckRating {
-  'Healthy' = 0,
-  'LowRisk' = 1,
-  'HighRisk' = 2,
-  'CriticalRisk' = 3,
+  Healthy = 0,
+  LowRisk = 1,
+  HighRisk = 2,
+  CriticalRisk = 3,
 }
 
 export type EntryType = 'Hospital' | 'OccupationalHealthcare' | 'HealthCheck';
@@ -19,7 +19,7 @@ export interface Diagnosis {
   latin?: string;
 }
 
-interface SickLeave {
+export interface SickLeave {
   startDate: string;
   endDate: string;
 }
